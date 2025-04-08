@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Price Predictor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2> House Price Predictor</h2>
+    
+    <form id="predictForm">
+      <label>
+        Bedrooms:
+        <input type="number" id="bedrooms" min="1" max="5" value="2" required>
+      </label><br>
+    
+      <label>
+        Square Feet:
+        <input type="number" id="sqft" min="300" max="10000" value="800" required>
+      </label><br>
+    
+      <button type="submit">Predict Price</button>
+    </form>
+
+    <h3 id="result"></h3>
+  </div>
+
+  <script>
+    const form = document.getElementById('predictForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const bedrooms = parseInt(document.getElementById('bedrooms').value);
+      const sqft = parseInt(document.getElementById('sqft').value);
+
+      if (sqft < 300) {
+        alert("Square footage must be at least 300 for realistic pricing.");
+        return;
+      }
+
+      const response = await fetch('http://localhost:5000/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ bedrooms, sqft })
+      });
+
+      const data = await response.json();
+      const price = data.predicted_price;
+      const costPerSqft = (price / sqft).toFixed(2);
+
+      document.getElementById('result').innerHTML = `
+        <strong>Predicted Price:</strong> $${price.toLocaleString()}<br>
+        <small>Cost per Sqft: $${costPerSqft}</small>
+      `;
+    });
+  </script>
+</body>
+</html>

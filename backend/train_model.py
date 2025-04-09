@@ -4,7 +4,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 import joblib
 
-# Load dataset 
+
 df = pd.read_csv('real_estate_dataset.csv')
 
 

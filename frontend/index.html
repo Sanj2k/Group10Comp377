@@ -2,24 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Price Predictor</title>
+  <title>House Price Predictor</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h2> House Price Predictor</h2>
-    
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2>Welcome, <span id="userName"></span>!</h2>
+      <button onclick="logout()" style="padding: 8px 12px; background-color: #dc3545; color: white; border: none; border-radius: 5px;">Logout</button>
+    </div>
+
+    <h3>House Price Predictor</h3>
+
     <form id="predictForm">
       <label>
         Bedrooms:
         <input type="number" id="bedrooms" min="1" max="5" value="2" required>
       </label><br>
-    
+
       <label>
         Square Feet:
         <input type="number" id="sqft" min="300" max="10000" value="800" required>
       </label><br>
-    
+
       <button type="submit">Predict Price</button>
     </form>
 
@@ -27,6 +33,21 @@
   </div>
 
   <script>
+   
+    const username = localStorage.getItem('username');
+    if (!username) {
+      window.location.href = 'login.html'; 
+    } else {
+      document.getElementById('userName').textContent = username;
+    }
+
+    
+    function logout() {
+      localStorage.removeItem('username');
+      window.location.href = 'login.html';
+    }
+
+    
     const form = document.getElementById('predictForm');
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
